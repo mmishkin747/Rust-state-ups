@@ -80,7 +80,7 @@ pub fn get_args() -> MyResult<Config> {
             passw = passw_v.to_string();
         }
     }
-
+    //this is hashmap stores commands for ups
     let commands = HashMap::from([
         ("main_voltage".to_string(), "O".to_string()),
         ("load".to_string(), "P".to_string()),
@@ -105,6 +105,7 @@ pub fn run(config: Config) -> MyResult<()> {
     Ok(())
 }
 
+//this fn check need auth and do auth
 fn auth (connect :&mut Connecter, user: &String, passw: &String) -> MyResult<()>{
     let check_auth = connect.read_mes()?;
     if check_auth.contains("Username:") {
@@ -116,6 +117,7 @@ fn auth (connect :&mut Connecter, user: &String, passw: &String) -> MyResult<()>
     Ok(())
 }
 
+//Send command to ups and return json struct
 fn send_commands(connect: &mut Connecter, commands: &HashMap<String, String>) -> MyResult<JsonValue> {
     let mut data = json::JsonValue::new_object();
     for (name, command) in commands{
