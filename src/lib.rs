@@ -54,7 +54,7 @@ impl Connecter {
 
     pub fn send_mes(&mut self, message: &str) -> MyResult<()> {
 
-        let mes = message.to_string();
+        let mes = message.to_string() ; //+&"\r\n"
         self.writer
             .write_all(&mes.as_bytes())
             .expect("didn't send messg");
@@ -120,7 +120,7 @@ fn send_commands(connect: &mut Connecter, commands: &HashMap<String, String>) ->
     let mut data = json::JsonValue::new_object();
     for (name, command) in commands{
             connect.send_mes(command)?;
-            data[name] = connect.read_mes()?.as_str().into();
+            data[name] = connect.read_mes()?.trim().into();
     } 
     Ok(data)
 }
